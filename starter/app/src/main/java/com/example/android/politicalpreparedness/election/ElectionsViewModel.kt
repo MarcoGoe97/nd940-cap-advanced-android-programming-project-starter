@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 
 class ElectionsViewModel (private val politicalDataRepository: DataRepository): ViewModel() {
 
-    init {
-        getUpcomingElections()
-    }
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean>
+        get() = _loading
 
     private val _upcomingElections = MutableLiveData<List<Election>>(mutableListOf())
     val upcomingElections: LiveData<List<Election>>
@@ -21,14 +21,17 @@ class ElectionsViewModel (private val politicalDataRepository: DataRepository): 
 
     val savedElections = politicalDataRepository.savedElections
 
-    private fun getUpcomingElections() {
+    fun getUpcomingElections() {
+        _loading.value = true
         viewModelScope.launch {
             when(val result = politicalDataRepository.getRemoteElections()) {
                 is Result.Success<List<Election>> -> {
                     _upcomingElections.value = result.data
+                    _loading.postValue(false)
                 }
                 is Result.Error -> {
-
+                    //TODO: Error message
+                    _loading.postValue(false)
                 }
             }
         }

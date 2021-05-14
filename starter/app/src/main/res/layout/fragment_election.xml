@@ -8,23 +8,47 @@
         <variable
             name="viewModel"
             type="com.example.android.politicalpreparedness.election.ElectionsViewModel" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="@dimen/margin_normal"
         tools:context="com.example.android.politicalpreparedness.MainActivity">
+
+        <TextView
+            android:id="@+id/tvUpcomingElections"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upcoming Elections"
+            android:textSize="@dimen/text_extra_large"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRemoteElections"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:visibility="@{viewModel.loading ? View.GONE : View.VISIBLE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/guidelineMiddle"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvUpcomingElections" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineMiddle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvUpcomingElections" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineMiddle"
@@ -33,14 +57,27 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.50" />
 
+        <TextView
+            android:id="@+id/tvSavedElections"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="Saved Elections"
+            android:textSize="@dimen/text_extra_large"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guidelineMiddle"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSavedElections"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_medium"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guidelineMiddle"
+            app:layout_constraintTop_toBottomOf="@+id/tvSavedElections"
             app:layout_constraintBottom_toBottomOf="parent"
             />
 

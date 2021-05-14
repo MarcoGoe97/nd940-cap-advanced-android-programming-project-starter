@@ -22,6 +22,7 @@ class ElectionsFragment: Fragment() {
                               savedInstanceState: Bundle?): View {
 
         binding = FragmentElectionBinding.inflate(inflater)
+        binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
         val remoteAdapter = ElectionListAdapter(ElectionListener { election ->
@@ -47,6 +48,9 @@ class ElectionsFragment: Fragment() {
                 savedAdapter.submitList(savedElections)
             }
         }
+
+        //load the elections
+        viewModel.getUpcomingElections()
 
         return binding.root
     }

@@ -12,6 +12,14 @@ import kotlinx.coroutines.launch
 
 class VoterInfoViewModel(private val politicalDataRepository: DataRepository) : ViewModel() {
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean>
+        get() = _loading
+
+    private val _loadingState = MutableLiveData<Boolean>()
+    val loadingState: LiveData<Boolean>
+        get() = _loadingState
+
     private val _voterInfo = MutableLiveData<VoterInfoResponse>()
     val voterInfo: LiveData<VoterInfoResponse>
         get() = _voterInfo
@@ -28,20 +36,32 @@ class VoterInfoViewModel(private val politicalDataRepository: DataRepository) : 
     val ballotUrl: LiveData<String>
         get() = _ballotUrl
 
+    private val _correspondenceAddress = MutableLiveData<String>(null)
+    val correspondenceAddress: LiveData<String>
+        get() = _correspondenceAddress
+
     private val _navigateToWebView = MutableLiveData<String>(null)
     val navigateToWebView: LiveData<String>
         get() = _navigateToWebView
 
     fun loadSavedState(electionId: Int) {
+        _loadingState.value = true
         viewModelScope.launch {
             when(politicalDataRepository.getSavedElectionFromDatabase(electionId)){
-                is Result.Success -> _isSaved.value = true
-                is Result.Error -> _isSaved.value = false
+                is Result.Success -> {
+                    _isSaved.postValue(true)
+                    _loadingState.postValue(false)
+                }
+                is Result.Error -> {
+                    _isSaved.postValue(false)
+                    _loadingState.postValue(false)
+                }
             }
         }
     }
 
     fun getVoterInfo(division: Division, electionId: Int) {
+        _loading.value = true
         viewModelScope.launch {
             when(val result = politicalDataRepository.getRemoteVoterInfo(
                     "${division.country}, ${division.state}",
@@ -52,9 +72,14 @@ class VoterInfoViewModel(private val politicalDataRepository: DataRepository) : 
                     if(!result.data.state.isNullOrEmpty()) {
                         _ballotUrl.value = result.data.state[0].electionAdministrationBody.ballotInfoUrl
                         _votingLocationUrl.value = result.data.state[0].electionAdministrationBody.votingLocationFinderUrl
+                        result.data.state[0].electionAdministrationBody.correspondenceAddress?.let{ address ->
+                            _correspondenceAddress.value = address.toFormattedString()
+                        }
                     }
+                    _loading.postValue(false)
                 }
                 is Result.Error -> {
+                    _loading.postValue(false)
                     //TODO: No info found placeholder
                 }
             }

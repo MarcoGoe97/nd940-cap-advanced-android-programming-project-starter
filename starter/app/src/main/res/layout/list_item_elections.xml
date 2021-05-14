@@ -16,11 +16,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_tiny"
+        android:paddingBottom="@dimen/margin_tiny"
+        android:orientation="vertical"
         android:onClick="@{() -> clickListener.onClick(election)}">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{election.name}"/>
+            android:text="@{election.name}"
+            android:textSize="@dimen/text_large"
+            android:textStyle="bold"
+            tools:text="VIP Test Election"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:text="@{election.electionDay.toLocaleString()}"
+            android:textSize="@dimen/text_medium"
+            tools:text="VIP Test Election"/>
 
     </LinearLayout>
 
