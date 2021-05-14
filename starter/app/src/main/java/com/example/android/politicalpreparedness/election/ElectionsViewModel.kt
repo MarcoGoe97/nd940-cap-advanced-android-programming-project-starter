@@ -19,13 +19,11 @@ class ElectionsViewModel (private val politicalDataRepository: DataRepository): 
     val upcomingElections: LiveData<List<Election>>
         get() = _upcomingElections
 
-    //TODO: Create live data val for saved elections
+    val savedElections = politicalDataRepository.savedElections
 
-    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
     private fun getUpcomingElections() {
         viewModelScope.launch {
-            val result = politicalDataRepository.getElections()
-            when(result) {
+            when(val result = politicalDataRepository.getRemoteElections()) {
                 is Result.Success<List<Election>> -> {
                     _upcomingElections.value = result.data
                 }
@@ -35,7 +33,4 @@ class ElectionsViewModel (private val politicalDataRepository: DataRepository): 
             }
         }
     }
-
-    //TODO: Create functions to navigate to saved or upcoming election voter info
-
 }
