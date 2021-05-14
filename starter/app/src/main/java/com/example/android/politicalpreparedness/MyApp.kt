@@ -2,6 +2,7 @@ package com.example.android.politicalpreparedness
 
 import android.app.Application
 import com.example.android.politicalpreparedness.election.ElectionsViewModel
+import com.example.android.politicalpreparedness.election.VoterInfoViewModel
 import com.example.android.politicalpreparedness.repository.DataRepository
 import com.example.android.politicalpreparedness.repository.PoliticalDataRepository
 import com.example.android.politicalpreparedness.repository.database.ElectionDatabase
@@ -23,6 +24,11 @@ class MyApp : Application() {
             //Declare a ViewModel - be later inject into Fragment with dedicated injector using by viewModel()
             viewModel {
                 ElectionsViewModel(
+                        get() as DataRepository
+                )
+            }
+            viewModel {
+                VoterInfoViewModel(
                         get() as DataRepository
                 )
             }
