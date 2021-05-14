@@ -2,6 +2,27 @@
 <resources>
     <string name="app_name">Political Preparedness</string>
 
-    <!-- TODO: Add necessary string values -->
+    <!--Launch-->
+    <string name="launch_welcome">Welcome to Political Preparedness!</string>
+    <string name="launch_upcoming_elections_title">Upcoming Elections</string>
+    <string name="launch_find_representatives_title">Find my Representatives</string>
+
+    <!--Elections-->
+    <string name="elections_upcoming_elections_title">Upcoming Elections</string>
+    <string name="elections_saved_elections_title">Saved Elections</string>
+    <string name="elections_click_for_details">Click for election details</string>
+    <string name="elections_no_data_placeholder">No upcoming elections found…\n\nPress to reload!</string>
+    <string name="elections_no_saved_placeholder">No saved elections…\n\nYou can save upcoming elections in the election detail.</string>
+    <string name="elections_error_fetch_election">Could not load the upcoming elections. Please check your internet connection and try again!</string>
+
+    <!--VoterInfo-->
+    <string name="voterInfo_no_data_placeholder">No additional information found…\n\nPress to reload!</string>
+    <string name="voterInfo_delete">Remove from saved elections</string>
+    <string name="voterInfo_save">Add to saved elections</string>
+    <string name="voterInfo_error_fetch_data">Could not load additional information. Please check your internet connection and try again!</string>
+    <string name="voterInfo_save_success">Successfully saved!</string>
+    <string name="voterInfo_remove_success">Successfully removed!</string>
+    <string name="voterInfo_save_error">Could not save the election. Please try again!</string>
+    <string name="voterInfo_remove_error">Could not remove the election. Please try again!</string>
 
 </resources>

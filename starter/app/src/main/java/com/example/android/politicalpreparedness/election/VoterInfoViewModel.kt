@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.repository.DataRepository
-import com.example.android.politicalpreparedness.repository.network.models.Division
+import com.example.android.politicalpreparedness.repository.network.models.Election
 import com.example.android.politicalpreparedness.repository.network.models.VoterInfoResponse
 import com.example.android.politicalpreparedness.util.Result
 import kotlinx.coroutines.launch
@@ -44,10 +45,24 @@ class VoterInfoViewModel(private val politicalDataRepository: DataRepository) : 
     val navigateToWebView: LiveData<String>
         get() = _navigateToWebView
 
-    fun loadSavedState(electionId: Int) {
+    private val _showSnackBar = MutableLiveData<Int>(null)
+    val showSnackBar: LiveData<Int>
+        get() = _showSnackBar
+
+    private val _showToast = MutableLiveData<Int>(null)
+    val showToast: LiveData<Int>
+        get() = _showToast
+
+    private lateinit var currentElection: Election
+
+    fun setCurrentElectionFromArgs(election: Election) {
+        currentElection = election
+    }
+
+    fun loadSavedState() {
         _loadingState.value = true
         viewModelScope.launch {
-            when(politicalDataRepository.getSavedElectionFromDatabase(electionId)){
+            when(politicalDataRepository.getSavedElectionFromDatabase(currentElection.id)){
                 is Result.Success -> {
                     _isSaved.postValue(true)
                     _loadingState.postValue(false)
@@ -60,12 +75,12 @@ class VoterInfoViewModel(private val politicalDataRepository: DataRepository) : 
         }
     }
 
-    fun getVoterInfo(division: Division, electionId: Int) {
+    fun refreshVoterInfo() {
         _loading.value = true
         viewModelScope.launch {
             when(val result = politicalDataRepository.getRemoteVoterInfo(
-                    "${division.country}, ${division.state}",
-                    electionId.toLong())
+                    "${currentElection.division.country}, ${currentElection.division.state}",
+                    currentElection.id.toLong())
             ) {
                 is Result.Success<VoterInfoResponse> -> {
                     _voterInfo.value = result.data
@@ -80,7 +95,7 @@ class VoterInfoViewModel(private val politicalDataRepository: DataRepository) : 
                 }
                 is Result.Error -> {
                     _loading.postValue(false)
-                    //TODO: No info found placeholder
+                    _showSnackBar.postValue(R.string.voterInfo_error_fetch_data)
                 }
             }
         }
@@ -88,24 +103,29 @@ class VoterInfoViewModel(private val politicalDataRepository: DataRepository) : 
 
     fun toggleSaveElection() {
         viewModelScope.launch {
-            voterInfo.value?.election?.let { election ->
-                val result = if(isSaved.value == true) {
-                    politicalDataRepository.deleteElectionFromDatabase(election.id)
-                } else {
-                    politicalDataRepository.saveElectionToDatabase(election)
-                }
+            val result = if(isSaved.value == true) {
+                politicalDataRepository.deleteElectionFromDatabase(currentElection.id)
+            } else {
+                politicalDataRepository.saveElectionToDatabase(currentElection)
+            }
 
-                when(result) {
-                    is Result.Success -> {
-                        loadSavedState(election.id)
-                        //TODO: Show success message?
+            when(result) {
+                is Result.Success -> {
+                    if(isSaved.value == true) {
+                        _showToast.postValue(R.string.voterInfo_save_success)
+                    } else {
+                        _showToast.postValue(R.string.voterInfo_remove_success)
                     }
-                    is Result.Error -> {
-                        //TODO: Show error message
+
+                    loadSavedState()
+                }
+                is Result.Error -> {
+                    if(isSaved.value == true) {
+                        _showToast.postValue(R.string.voterInfo_save_error)
+                    } else {
+                        _showToast.postValue(R.string.voterInfo_remove_error)
                     }
                 }
-            } ?: run {
-                //TODO: Show error message
             }
         }
     }
@@ -126,4 +146,11 @@ class VoterInfoViewModel(private val politicalDataRepository: DataRepository) : 
         _navigateToWebView.value = null
     }
 
+    fun snackBarShown() {
+        _showSnackBar.value = null
+    }
+
+    fun toastShown() {
+        _showToast.value = null
+    }
 }

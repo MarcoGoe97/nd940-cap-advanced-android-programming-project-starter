@@ -10,22 +10,16 @@
         <import type="android.view.View"/>
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="@dimen/margin_normal"
         tools:context="com.example.android.politicalpreparedness.MainActivity">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/margin_normal"
-            android:visibility="@{viewModel.loading ? View.GONE : View.VISIBLE}">
+            android:visibility="@{viewModel.loading || viewModel.voterInfo == null ? View.GONE : View.VISIBLE}">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/election_name"
@@ -107,17 +101,42 @@
                 app:layout_constraintTop_toBottomOf="@id/state_correspondence_header"
                 app:layout_constraintStart_toStartOf="@id/election_date"
                 tools:text="City, Sate zip"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{viewModel.isSaved ? `Delete` : `Save`}"
-                android:onClick="@{() -> viewModel.toggleSaveElection()}"
-                android:visibility="@{viewModel.loadingState ? View.GONE : View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            style="@style/Text20"
+            android:textAlignment="center"
+            android:text="@string/voterInfo_no_data_placeholder"
+            android:onClick="@{() -> viewModel.refreshVoterInfo()}"
+            android:visibility="@{viewModel.voterInfo == null &amp;&amp; !viewModel.loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:text="@{viewModel.isSaved ? @string/voterInfo_delete : @string/voterInfo_save}"
+            android:onClick="@{() -> viewModel.toggleSaveElection()}"
+            android:visibility="@{viewModel.loadingState ? View.GONE : View.VISIBLE}"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/voterInfo_delete"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

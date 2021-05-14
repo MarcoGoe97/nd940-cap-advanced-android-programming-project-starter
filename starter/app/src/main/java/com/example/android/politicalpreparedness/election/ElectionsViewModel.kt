@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.repository.DataRepository
 import com.example.android.politicalpreparedness.repository.network.models.Election
 import com.example.android.politicalpreparedness.util.Result
@@ -19,9 +20,13 @@ class ElectionsViewModel (private val politicalDataRepository: DataRepository): 
     val upcomingElections: LiveData<List<Election>>
         get() = _upcomingElections
 
+    private val _showSnackBar = MutableLiveData<Int>(null)
+    val showSnackBar: LiveData<Int>
+        get() = _showSnackBar
+
     val savedElections = politicalDataRepository.savedElections
 
-    fun getUpcomingElections() {
+    fun refreshUpcomingElections() {
         _loading.value = true
         viewModelScope.launch {
             when(val result = politicalDataRepository.getRemoteElections()) {
@@ -30,10 +35,14 @@ class ElectionsViewModel (private val politicalDataRepository: DataRepository): 
                     _loading.postValue(false)
                 }
                 is Result.Error -> {
-                    //TODO: Error message
+                    _showSnackBar.postValue(R.string.elections_error_fetch_election)
                     _loading.postValue(false)
                 }
             }
         }
+    }
+
+    fun snackBarShown() {
+        _showSnackBar.value = null
     }
 }

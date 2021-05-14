@@ -10,6 +10,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
+import com.google.android.material.snackbar.Snackbar
 
 class ElectionsFragment: Fragment() {
 
@@ -26,7 +27,7 @@ class ElectionsFragment: Fragment() {
         binding.viewModel = viewModel
 
         val remoteAdapter = ElectionListAdapter(ElectionListener { election ->
-            this.findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(election.id, election.division))
+            this.findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(election))
         })
 
         binding.rvRemoteElections.adapter = remoteAdapter
@@ -38,7 +39,7 @@ class ElectionsFragment: Fragment() {
         }
 
         val savedAdapter = ElectionListAdapter(ElectionListener { election ->
-            this.findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(election.id, election.division))
+            this.findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(election))
         })
 
         binding.rvSavedElections.adapter = savedAdapter
@@ -49,8 +50,15 @@ class ElectionsFragment: Fragment() {
             }
         }
 
+        viewModel.showSnackBar.observe(viewLifecycleOwner) {
+            it?.let { messageId ->
+                Snackbar.make(requireView(), getString(messageId), Snackbar.LENGTH_LONG).show()
+                viewModel.snackBarShown()
+            }
+        }
+
         //load the elections
-        viewModel.getUpcomingElections()
+        viewModel.refreshUpcomingElections()
 
         return binding.root
     }

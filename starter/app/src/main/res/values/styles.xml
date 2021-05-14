@@ -4,11 +4,39 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/primaryLightColor</item>
     </style>
 
-    <!-- TODO: Add necessary styles -->
+    <style name="Text20">
+        <item name="android:textSize">@dimen/text_extra_large</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="Text20.Bold">
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="Text15">
+        <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="Text15.Bold">
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="Text13">
+        <item name="android:textSize">@dimen/text_normal</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="Text13.Bold">
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
 
 </resources>

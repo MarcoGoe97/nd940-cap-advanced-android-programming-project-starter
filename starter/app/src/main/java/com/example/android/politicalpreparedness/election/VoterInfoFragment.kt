@@ -4,8 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class VoterInfoFragment : Fragment() {
@@ -21,8 +23,7 @@ class VoterInfoFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        val electionId = VoterInfoFragmentArgs.fromBundle(requireArguments()).argElectionId
-        val division = VoterInfoFragmentArgs.fromBundle(requireArguments()).argDivision
+        val election = VoterInfoFragmentArgs.fromBundle(requireArguments()).argElection
 
         viewModel.navigateToWebView.observe(viewLifecycleOwner) {
             it?.let { url ->
@@ -31,9 +32,24 @@ class VoterInfoFragment : Fragment() {
             }
         }
 
-        viewModel.loadSavedState(electionId)
+        viewModel.showSnackBar.observe(viewLifecycleOwner) {
+            it?.let { messageId ->
+                Snackbar.make(requireView(), getString(messageId), Snackbar.LENGTH_LONG).show()
+                viewModel.snackBarShown()
+            }
+        }
+
+        viewModel.showToast.observe(viewLifecycleOwner) {
+            it?.let { messageId ->
+                Toast.makeText(requireContext(), getString(messageId), Toast.LENGTH_SHORT).show()
+                viewModel.toastShown()
+            }
+        }
+
+        viewModel.setCurrentElectionFromArgs(election)
+        viewModel.loadSavedState()
         //More info about call parameters https://knowledge.udacity.com/questions/507353
-        viewModel.getVoterInfo(division, electionId)
+        viewModel.refreshVoterInfo()
 
         return binding.root
     }
