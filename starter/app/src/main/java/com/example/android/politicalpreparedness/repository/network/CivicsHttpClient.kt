@@ -1,4 +1,4 @@
-package com.example.android.politicalpreparedness.network
+package com.example.android.politicalpreparedness.repository.network
 
 import okhttp3.OkHttpClient
 

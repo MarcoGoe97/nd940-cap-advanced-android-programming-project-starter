@@ -19,6 +19,7 @@ class VoterInfoFragment : Fragment() {
         binding = FragmentVoterInfoBinding.inflate(inflater)
 
         //TODO: Populate voter info -- hide views without provided data.
+        //MGOE: More info about call https://knowledge.udacity.com/questions/507353
         /**
         Hint: You will need to ensure proper data is provided from previous fragment.
         */
