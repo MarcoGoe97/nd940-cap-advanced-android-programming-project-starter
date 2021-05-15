@@ -42,6 +42,6 @@
     <string name="representatives_list_placeholder">No Data…\n\nPress \"FIND MY REPRESENTATIVES\" to start!</string>
     <string name="representatives_error_fetch">Could not load your representatives. Please check your internet connection and try again!</string>
     <string name="representatives_error_not_found">Could not find any representatives to your selected location!</string>
-
+    <string name="representative_expand">Expand</string>
 
 </resources>

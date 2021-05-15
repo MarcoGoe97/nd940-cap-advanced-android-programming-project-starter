@@ -41,6 +41,14 @@ class RepresentativeViewModel(context: Context, private val politicalDataReposit
     val representatives: LiveData<List<Representative>>
         get() = _representatives
 
+    fun clearAll() {
+        addressLine1.value = ""
+        addressLine2.value = ""
+        city.value = ""
+        stateIndex.value = 0
+        zip.value = ""
+    }
+
     fun setFormFields(address: Address) {
         weakContext.get()?.resources?.getStringArray(R.array.states)?.let { statesList ->
             addressLine1.value = address.line1

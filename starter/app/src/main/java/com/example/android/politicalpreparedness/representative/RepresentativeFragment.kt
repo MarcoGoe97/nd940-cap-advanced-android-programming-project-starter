@@ -23,7 +23,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 
-class DetailFragment : Fragment() {
+class RepresentativeFragment : Fragment() {
 
     companion object {
         private const val REQUEST_LOCATION_PERMISSION = 1
@@ -48,7 +48,17 @@ class DetailFragment : Fragment() {
 
         viewModel.representatives.observe(viewLifecycleOwner) {
             it?.let { representatives ->
+                //Without data we should not be able to hide the search
+                //From https://stackoverflow.com/a/58077083
+                if(representatives.isNotEmpty()){
+                    binding.mlMain.getTransition(R.id.hideSearch).setEnable(true)
+                } else {
+                    binding.mlMain.getTransition(R.id.hideSearch).setEnable(false)
+                }
+
                 adapter.submitList(representatives)
+            } ?: run {
+                binding.mlMain.getTransition(R.id.hideSearch).setEnable(false)
             }
         }
 
@@ -67,12 +77,27 @@ class DetailFragment : Fragment() {
         }
 
         binding.buttonSearch.setOnClickListener {
+            //Scroll to the top otherwise motionLayout has bugs when result empty
+            binding.rvRepresentatives.scrollToPosition(0)
+
             hideKeyboard()
             viewModel.findRepresentativesWithForm()
         }
 
         binding.buttonLocation.setOnClickListener {
+            //Scroll to the top otherwise motionLayout has bugs when result empty
+            binding.rvRepresentatives.scrollToPosition(0)
+
             if(checkLocationPermissions()) getLocation()
+        }
+
+        binding.ivExpand.setOnClickListener {
+            binding.mlMain.transitionToStart()
+            binding.rvRepresentatives.scrollToPosition(0)
+        }
+
+        binding.buttonClearAll.setOnClickListener {
+            viewModel.clearAll()
         }
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
