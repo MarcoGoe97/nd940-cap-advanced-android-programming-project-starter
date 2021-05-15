@@ -10,7 +10,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:padding="@dimen/text_normal">
+        android:paddingTop="@dimen/margin_normal"
+        android:paddingStart="@dimen/margin_normal"
+        android:paddingEnd="@dimen/margin_normal">
 
         <!-- TODO: Add visual styling and content -->
         <TextView
@@ -122,6 +124,9 @@
             android:id="@+id/rvRepresentatives"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:paddingTop="@dimen/margin_small"
+            android:paddingBottom="@dimen/margin_small"
+            android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

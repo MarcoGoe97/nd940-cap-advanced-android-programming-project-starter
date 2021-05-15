@@ -32,10 +32,10 @@ class RepresentativeViewHolder(val binding: ListItemRepresentativeBinding): Recy
 
     fun bind(item: Representative) {
         binding.representative = item
-        //binding.representativePhoto.setImageResource(R.drawable.ic_profile)
+        binding.representativePhoto.setImageResource(R.drawable.ic_profile)
 
-        //TODO: Show social links ** Hint: Use provided helper methods
-        //TODO: Show www link ** Hint: Use provided helper methods
+        item.official.channels?.let { showSocialLinks(it) }
+        item.official.urls?.let { showWWWLinks(it) }
 
         binding.executePendingBindings()
     }
@@ -48,21 +48,30 @@ class RepresentativeViewHolder(val binding: ListItemRepresentativeBinding): Recy
         }
     }
 
-    /*private fun showSocialLinks(channels: List<Channel>) {
+    private fun showSocialLinks(channels: List<Channel>) {
         val facebookUrl = getFacebookUrl(channels)
         if (!facebookUrl.isNullOrBlank()) {
             enableLink(binding.facebookIcon, facebookUrl)
+        } else {
+            binding.facebookIcon.visibility= View.GONE
         }
 
         val twitterUrl = getTwitterUrl(channels)
         if (!twitterUrl.isNullOrBlank()) {
             enableLink(binding.twitterIcon, twitterUrl)
+        } else {
+            binding.twitterIcon.visibility= View.GONE
         }
     }
 
     private fun showWWWLinks(urls: List<String>) {
-        enableLink(binding.wwwIcon, urls.first())
-    }*/
+        val wwwUrl = urls.firstOrNull()
+        if(!wwwUrl.isNullOrBlank()) {
+            enableLink(binding.wwwIcon, wwwUrl)
+        } else {
+            binding.wwwIcon.visibility= View.GONE
+        }
+    }
 
     private fun getFacebookUrl(channels: List<Channel>): String? {
         return channels.filter { channel -> channel.type == "Facebook" }
@@ -84,7 +93,7 @@ class RepresentativeViewHolder(val binding: ListItemRepresentativeBinding): Recy
     private fun setIntent(url: String) {
         val uri = Uri.parse(url)
         val intent = Intent(ACTION_VIEW, uri)
-        //itemView.context.startActivity(intent)
+        itemView.context.startActivity(intent)
     }
 }
 

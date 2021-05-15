@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -7,16 +8,88 @@
             name="representative"
             type="com.example.android.politicalpreparedness.representative.model.Representative" />
     </data>
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_tiny"
+        android:paddingBottom="@dimen/margin_tiny">
+
+        <ImageView
+            android:id="@+id/representativePhoto"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:profileImage="@{representative.official.photoUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
+            android:id="@+id/tvOfficeName"
+            style="@style/Text15.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Text15.Bold"
+            android:layout_marginStart="@dimen/margin_tiny"
+            android:text="@{representative.office.name}"
+            app:layout_constraintStart_toEndOf="@+id/representativePhoto"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="President of United Statesn" />
+
+        <TextView
+            android:id="@+id/tvOfficialName"
+            style="@style/Text15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_tiny"
             android:text="@{representative.official.name}"
-            tools:text="Josef Biden"/>
-        
-    </LinearLayout>
+            app:layout_constraintStart_toEndOf="@+id/representativePhoto"
+            app:layout_constraintTop_toBottomOf="@+id/tvOfficeName"
+            tools:text="Josef Biden" />
+
+        <TextView
+            android:id="@+id/tvParty"
+            style="@style/Text15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_tiny"
+            android:text="@{representative.official.party}"
+            app:layout_constraintStart_toEndOf="@+id/representativePhoto"
+            app:layout_constraintTop_toBottomOf="@+id/tvOfficialName"
+            tools:text="Democratic Party" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/tvOfficialName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tvParty">
+
+            <ImageView
+                android:id="@+id/wwwIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="@dimen/margin_tiny"
+                android:visibility="gone"
+                android:src="@drawable/ic_www"
+                tools:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/facebookIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="@dimen/margin_tiny"
+                android:visibility="gone"
+                android:src="@drawable/ic_facebook"
+                tools:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/twitterIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="@dimen/margin_tiny"
+                android:visibility="gone"
+                android:src="@drawable/ic_twitter"
+                tools:visibility="visible"/>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
