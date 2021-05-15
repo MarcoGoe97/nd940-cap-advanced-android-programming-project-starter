@@ -29,6 +29,7 @@ class DetailFragment : Fragment() {
 
         binding = FragmentRepresentativeBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         val adapter = RepresentativeListAdapter()
         binding.rvRepresentatives.adapter = adapter
@@ -40,8 +41,6 @@ class DetailFragment : Fragment() {
         }
 
         //TODO: Establish button listeners for field and location search
-
-        viewModel.getRepresentativesFromFields()
 
         return binding.root
     }
@@ -81,7 +80,7 @@ class DetailFragment : Fragment() {
 
     private fun hideKeyboard() {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
 }

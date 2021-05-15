@@ -35,6 +35,7 @@ class MyApp : Application() {
             }
             viewModel {
                 RepresentativeViewModel(
+                        get(),
                         get() as DataRepository
                 )
             }

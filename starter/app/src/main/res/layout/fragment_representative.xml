@@ -3,7 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:motion="http://schemas.android.com/tools">
 
-    <!-- TODO: Add data binding node -->
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.android.politicalpreparedness.representative.RepresentativeViewModel" />
+    </data>
 
     <!-- TODO: Add motion scene to hide form on vertical scroll. -->
     <!--<androidx.constraintlayout.motion.widget.MotionLayout-->
@@ -33,6 +37,7 @@
             android:layout_marginTop="@dimen/margin_tiny"
             android:autofillHints=""
             android:hint="Address Line 1"
+            android:text="@={viewModel.addressLine1}"
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_title" />
@@ -45,6 +50,7 @@
             android:layout_height="0dp"
             android:autofillHints=""
             android:hint="Address Line 2"
+            android:text="@={viewModel.addressLine2}"
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/address_line_1" />
@@ -57,12 +63,13 @@
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:hint="City"
+            android:text="@={viewModel.city}"
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/state"
             app:layout_constraintTop_toBottomOf="@id/address_line_2" />
 
-        <!-- TODO: Add data binding value -->
+        <!--From: https://knowledge.udacity.com/questions/564299-->
         <!-- TODO: Add visual styling and content -->
         <Spinner
             android:id="@+id/state"
@@ -71,6 +78,7 @@
             android:autofillHints=""
             android:inputType="textPostalAddress"
             android:entries="@array/states"
+            android:selectedItemPosition="@={viewModel.stateIndex}"
             app:layout_constraintStart_toEndOf="@id/city"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/city"
@@ -86,6 +94,7 @@
             android:inputType="number"
             android:maxLength="5"
             android:hint="Zip"
+            android:text="@={viewModel.zip}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="@id/city"
             app:layout_constraintTop_toBottomOf="@id/city" />
@@ -99,6 +108,7 @@
             android:layout_height="wrap_content"
             android:text="Find my Representatives"
             style="@style/Widget.AppCompat.Button.Colored"
+            android:onClick="@{() -> viewModel.findRepresentativesWithForm()}"
             app:layout_constraintTop_toBottomOf="@id/zip"/>
 
         <Button
@@ -107,6 +117,7 @@
             android:layout_height="wrap_content"
             android:text="Use my Location"
             style="@style/Widget.AppCompat.Button.Colored"
+            android:onClick="@{() -> viewModel.findRepresentativesWithLocation()}"
             app:layout_constraintTop_toBottomOf="@id/button_search" />
 
         <!-- TODO: Add visual styling and content -->
