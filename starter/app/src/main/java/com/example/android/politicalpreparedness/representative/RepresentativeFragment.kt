@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.repository.network.models.Address
+import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import java.util.Locale
 
 class DetailFragment : Fragment() {
@@ -17,21 +19,29 @@ class DetailFragment : Fragment() {
         //TODO: Add Constant for Location request
     }
 
-    //TODO: Declare ViewModel
+    private val viewModel: RepresentativeViewModel by viewModel()
+
     private lateinit var binding: FragmentRepresentativeBinding
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View{
 
-        //TODO: Establish bindings
         binding = FragmentRepresentativeBinding.inflate(inflater)
+        binding.lifecycleOwner = this
 
-        //TODO: Define and assign Representative adapter
+        val adapter = RepresentativeListAdapter()
+        binding.rvRepresentatives.adapter = adapter
 
-        //TODO: Populate Representative adapter
+        viewModel.representatives.observe(viewLifecycleOwner) {
+            it?.let { representatives ->
+                adapter.submitList(representatives)
+            }
+        }
 
         //TODO: Establish button listeners for field and location search
+
+        viewModel.getRepresentativesFromFields()
 
         return binding.root
     }
