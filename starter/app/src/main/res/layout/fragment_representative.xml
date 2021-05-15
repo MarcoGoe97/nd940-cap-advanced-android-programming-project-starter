@@ -122,18 +122,22 @@
 
             <Button
                 android:id="@+id/button_search"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/representatives_button_search_title"
-                style="@style/Widget.AppCompat.Button.Colored"
-                app:layout_constraintTop_toBottomOf="@id/zip"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/zip" />
 
             <Button
                 android:id="@+id/button_location"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/representatives_button_location_title"
-                style="@style/Widget.AppCompat.Button.Colored"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/button_search" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -182,6 +186,8 @@
             style="@style/Text15.Bold"
             motion:visibilityMode="ignore"
             app:layout_constraintTop_toBottomOf="@id/representative_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>

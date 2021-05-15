@@ -19,14 +19,17 @@
             android:id="@+id/election_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:padding="@dimen/margin_small"
             android:background="@color/primaryLightColor"
-            app:titleTextAppearance="@style/Text20.White"
+            android:padding="@dimen/margin_small"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:title="@{viewModel.currentElection.name}"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:titleTextAppearance="@style/Text20.White" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clVoterInfo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="@dimen/margin_normal"
@@ -108,12 +111,6 @@
                 app:layout_constraintStart_toStartOf="@id/election_date"
                 app:layout_constraintTop_toBottomOf="@id/state_correspondence_header"
                 tools:text="City, Sate zip" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/address_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="state_correspondence_header,address" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar
@@ -128,6 +125,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/noDataPlaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
