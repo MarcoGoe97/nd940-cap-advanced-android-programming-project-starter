@@ -112,7 +112,7 @@
                 android:id="@+id/buttonClearAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reset search"
+                android:text="@string/representative_reset_search"
                 style="@style/Text15.Bold"
                 android:drawablePadding="@dimen/margin_small"
                 app:layout_constraintTop_toTopOf="@id/zip"

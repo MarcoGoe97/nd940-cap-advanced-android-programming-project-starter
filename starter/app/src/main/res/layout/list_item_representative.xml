@@ -22,7 +22,8 @@
             app:profileImage="@{representative.official.photoUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/representative_photo" />
 
         <TextView
             android:id="@+id/tvOfficeName"
@@ -71,7 +72,8 @@
                 android:layout_marginStart="@dimen/margin_tiny"
                 android:visibility="gone"
                 android:src="@drawable/ic_www"
-                tools:visibility="visible"/>
+                tools:visibility="visible"
+                android:contentDescription="@string/representative_website" />
 
             <ImageView
                 android:id="@+id/facebookIcon"
@@ -80,7 +82,8 @@
                 android:layout_marginStart="@dimen/margin_tiny"
                 android:visibility="gone"
                 android:src="@drawable/ic_facebook"
-                tools:visibility="visible"/>
+                tools:visibility="visible"
+                android:contentDescription="@string/representative_facebook" />
 
             <ImageView
                 android:id="@+id/twitterIcon"
@@ -89,7 +92,8 @@
                 android:layout_marginStart="@dimen/margin_tiny"
                 android:visibility="gone"
                 android:src="@drawable/ic_twitter"
-                tools:visibility="visible"/>
+                tools:visibility="visible"
+                android:contentDescription="@string/representative_twitter" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

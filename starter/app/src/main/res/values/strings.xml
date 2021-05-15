@@ -43,5 +43,10 @@
     <string name="representatives_error_fetch">Could not load your representatives. Please check your internet connection and try again!</string>
     <string name="representatives_error_not_found">Could not find any representatives to your selected location!</string>
     <string name="representative_expand">Expand</string>
+    <string name="representative_reset_search">Reset search</string>
+    <string name="representative_photo">Representative Photo</string>
+    <string name="representative_website">Website</string>
+    <string name="representative_facebook">Facebook Link</string>
+    <string name="representative_twitter">Twitter Link</string>
 
 </resources>
