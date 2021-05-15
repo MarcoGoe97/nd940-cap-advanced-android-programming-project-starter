@@ -117,7 +117,6 @@
             android:layout_height="wrap_content"
             android:text="Use my Location"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:onClick="@{() -> viewModel.findRepresentativesWithLocation()}"
             app:layout_constraintTop_toBottomOf="@id/button_search" />
 
         <!-- TODO: Add visual styling and content -->

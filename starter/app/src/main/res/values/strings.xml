@@ -29,4 +29,8 @@
     <string name="voterInfo_ballot_information"><u>Ballot Information</u></string>
     <string name="voterInfo_address_title">Correspondence Address</string>
 
+    <!--Representatives-->
+    <string name="Representatives_permission_denied_explanation">You need to grant location permission in order to select the location</string>
+
+
 </resources>

@@ -7,6 +7,7 @@ import com.example.android.politicalpreparedness.repository.network.models.Elect
 import com.example.android.politicalpreparedness.repository.network.models.RepresentativeResponse
 import com.example.android.politicalpreparedness.repository.network.models.VoterInfoResponse
 import com.example.android.politicalpreparedness.util.Result
+import retrofit2.HttpException
 
 class PoliticalDataRepository(
         private val electionDao: ElectionDao,
@@ -38,7 +39,18 @@ class PoliticalDataRepository(
             val result = civicsApiService.getRepresentatives(address)
             Result.Success(result)
         } catch (e: Exception) {
-            Result.Error(e.message)
+            when(e) {
+                is HttpException -> {
+                    if(e.code() == 404) {
+                        Result.Error(e.message, 404)
+                    } else {
+                        Result.Error(e.message, 0)
+                    }
+                }
+                else -> {
+                    Result.Error(e.message, 0)
+                }
+            }
         }
     }
 

@@ -29,8 +29,17 @@ class RepresentativeViewModel(context: Context, private val politicalDataReposit
     val representatives: LiveData<List<Representative>>
         get() = _representatives
 
-    fun findRepresentativesWithLocation() {
-        println("Test")
+    fun setFormFields(address: Address) {
+        weakContext.get()?.resources?.getStringArray(R.array.states)?.let { statesList ->
+            addressLine1.value = address.line1
+            addressLine2.value = address.line2
+            city.value = address.city
+            val addressIndex = statesList.indexOf(address.state)
+            if(addressIndex != -1) {
+                stateIndex.value = addressIndex
+            }
+            zip.value = address.zip
+        }
     }
 
     fun findRepresentativesWithForm() {
@@ -40,12 +49,20 @@ class RepresentativeViewModel(context: Context, private val politicalDataReposit
         }
     }
 
-    private fun getRepresentatives(address: Address) {
+    fun getRepresentatives(address: Address) {
         viewModelScope.launch {
             when(val result = politicalDataRepository.getRemoteRepresentatives(address.toFormattedString())) {
                 is Result.Success<RepresentativeResponse> -> {
                     _representatives.value = result.data.offices.flatMap { office -> office.getRepresentatives(result.data.officials) }
-                    println(result.data.officials.size)
+                }
+                is Result.Error -> {
+                    if(result.statusCode == 404) {
+                        //Not found
+                        println(result.statusCode)
+                    } else {
+                        //Error
+                        println(result.message)
+                    }
                 }
             }
         }
