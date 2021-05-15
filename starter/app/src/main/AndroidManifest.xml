@@ -13,7 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".MyApp">
-        <activity android:name="com.example.android.politicalpreparedness.MainActivity">
+
+        <!--From https://stackoverflow.com/questions/3723823/i-want-my-android-application-to-be-only-run-in-portrait-mode-->
+        <activity
+            android:name="com.example.android.politicalpreparedness.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

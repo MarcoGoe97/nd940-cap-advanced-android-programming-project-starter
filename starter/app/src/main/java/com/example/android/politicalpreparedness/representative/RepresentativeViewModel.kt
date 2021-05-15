@@ -25,6 +25,18 @@ class RepresentativeViewModel(context: Context, private val politicalDataReposit
     val stateIndex = MutableLiveData(0)
     val zip = MutableLiveData("")
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean>
+        get() = _loading
+
+    private val _showSnackBar = MutableLiveData<Int>(null)
+    val showSnackBar: LiveData<Int>
+        get() = _showSnackBar
+
+    private val _showToast = MutableLiveData<Int>(null)
+    val showToast: LiveData<Int>
+        get() = _showToast
+
     private val _representatives = MutableLiveData<List<Representative>>(mutableListOf())
     val representatives: LiveData<List<Representative>>
         get() = _representatives
@@ -50,22 +62,32 @@ class RepresentativeViewModel(context: Context, private val politicalDataReposit
     }
 
     fun getRepresentatives(address: Address) {
+        _loading.value = true
         viewModelScope.launch {
             when(val result = politicalDataRepository.getRemoteRepresentatives(address.toFormattedString())) {
                 is Result.Success<RepresentativeResponse> -> {
                     _representatives.value = result.data.offices.flatMap { office -> office.getRepresentatives(result.data.officials) }
+                    _loading.postValue(false)
                 }
                 is Result.Error -> {
                     if(result.statusCode == 404) {
-                        //Not found
-                        println(result.statusCode)
+                        _showToast.value = R.string.representatives_error_not_found
                     } else {
-                        //Error
-                        println(result.message)
+                        _showSnackBar.value = R.string.representatives_error_fetch
                     }
+                    _representatives.value = mutableListOf()
+                    _loading.postValue(false)
                 }
             }
         }
+    }
+
+    fun snackBarShown() {
+        _showSnackBar.value = null
+    }
+
+    fun toastShown() {
+        _showToast.value = null
     }
 
 }

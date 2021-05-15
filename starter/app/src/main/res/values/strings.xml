@@ -30,7 +30,18 @@
     <string name="voterInfo_address_title">Correspondence Address</string>
 
     <!--Representatives-->
-    <string name="Representatives_permission_denied_explanation">You need to grant location permission in order to select the location</string>
+    <string name="representatives_permission_denied_explanation">You need to grant location permission in order to select the location</string>
+    <string name="representatives_search_title">Representative Search</string>
+    <string name="representatives_line1_hint">Address Line 1</string>
+    <string name="representatives_line2_hint">Address Line 2</string>
+    <string name="representatives_city_hint">City</string>
+    <string name="representatives_zip_hint">Zip</string>
+    <string name="representatives_list_title">My Representatives</string>
+    <string name="representatives_button_search_title">Find my Representatives</string>
+    <string name="representatives_button_location_title">Use my location</string>
+    <string name="representatives_list_placeholder">No Data…\n\nPress \"FIND MY REPRESENTATIVES\" to start!</string>
+    <string name="representatives_error_fetch">Could not load your representatives. Please check your internet connection and try again!</string>
+    <string name="representatives_error_not_found">Could not find any representatives to your selected location!</string>
 
 
 </resources>

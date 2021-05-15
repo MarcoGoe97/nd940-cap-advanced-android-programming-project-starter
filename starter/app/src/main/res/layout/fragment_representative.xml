@@ -7,6 +7,7 @@
         <variable
             name="viewModel"
             type="com.example.android.politicalpreparedness.representative.RepresentativeViewModel" />
+        <import type="android.view.View"/>
     </data>
 
     <!-- TODO: Add motion scene to hide form on vertical scroll. -->
@@ -18,51 +19,44 @@
         android:paddingStart="@dimen/margin_normal"
         android:paddingEnd="@dimen/margin_normal">
 
-        <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/search_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Representative Search"
+            android:text="@string/representatives_search_title"
             style="@style/Text20.Bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- TODO: Add data binding value -->
-        <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/address_line_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_tiny"
             android:autofillHints=""
-            android:hint="Address Line 1"
+            android:hint="@string/representatives_line1_hint"
             android:text="@={viewModel.addressLine1}"
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_title" />
 
-        <!-- TODO: Add data binding value -->
-        <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/address_line_2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:autofillHints=""
-            android:hint="Address Line 2"
+            android:hint="@string/representatives_line2_hint"
             android:text="@={viewModel.addressLine2}"
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/address_line_1" />
 
-        <!-- TODO: Add data binding value -->
-        <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/city"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:autofillHints=""
-            android:hint="City"
+            android:hint="@string/representatives_city_hint"
             android:text="@={viewModel.city}"
             android:inputType="textPostalAddress"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +64,6 @@
             app:layout_constraintTop_toBottomOf="@id/address_line_2" />
 
         <!--From: https://knowledge.udacity.com/questions/564299-->
-        <!-- TODO: Add visual styling and content -->
         <Spinner
             android:id="@+id/state"
             android:layout_width="0dp"
@@ -84,8 +77,6 @@
             app:layout_constraintTop_toTopOf="@id/city"
             app:layout_constraintBottom_toBottomOf="@id/city"/>
 
-        <!-- TODO: Add data binding value -->
-        <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/zip"
             android:layout_width="0dp"
@@ -93,39 +84,34 @@
             android:autofillHints=""
             android:inputType="number"
             android:maxLength="5"
-            android:hint="Zip"
+            android:hint="@string/representatives_zip_hint"
             android:text="@={viewModel.zip}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="@id/city"
             app:layout_constraintTop_toBottomOf="@id/city" />
 
-        <!-- TODO: Add visual styling and label -->
-
-        <!-- TODO: Add visual styling and content -->
         <Button
             android:id="@+id/button_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Find my Representatives"
+            android:text="@string/representatives_button_search_title"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:onClick="@{() -> viewModel.findRepresentativesWithForm()}"
             app:layout_constraintTop_toBottomOf="@id/zip"/>
 
         <Button
             android:id="@+id/button_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Use my Location"
+            android:text="@string/representatives_button_location_title"
             style="@style/Widget.AppCompat.Button.Colored"
             app:layout_constraintTop_toBottomOf="@id/button_search" />
 
-        <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/representative_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
-            android:text="My Representatives"
+            android:text="@string/representatives_list_title"
             style="@style/Text20.Bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_location" />
@@ -137,21 +123,31 @@
             android:paddingTop="@dimen/margin_small"
             android:paddingBottom="@dimen/margin_small"
             android:clipToPadding="false"
+            android:visibility="@{viewModel.loading || viewModel.representatives.size() == 0 ? View.GONE : View.VISIBLE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/representative_title" />
 
-        <!-- TODO: Add visual styling and content -->
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/representative_title" />
+
         <TextView
             android:id="@+id/list_placeholder"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:gravity="center"
             android:textAlignment="center"
-            android:visibility="gone"
-            android:text="No data"
+            android:visibility="@{!viewModel.loading &amp;&amp; viewModel.representatives.size() == 0 ? View.VISIBLE : View.GONE}"
+            android:text="@string/representatives_list_placeholder"
+            style="@style/Text15.Bold"
             motion:visibilityMode="ignore"
             app:layout_constraintTop_toBottomOf="@id/representative_title"
             app:layout_constraintBottom_toBottomOf="parent" />
