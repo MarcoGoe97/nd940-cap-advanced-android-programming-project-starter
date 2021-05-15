@@ -24,5 +24,9 @@
     <string name="voterInfo_remove_success">Successfully removed!</string>
     <string name="voterInfo_save_error">Could not save the election. Please try again!</string>
     <string name="voterInfo_remove_error">Could not remove the election. Please try again!</string>
+    <string name="voterInfo_election_information_title">Election Information</string>
+    <string name="voterInfo_voting_locations"><u>Voting Locations</u></string>
+    <string name="voterInfo_ballot_information"><u>Ballot Information</u></string>
+    <string name="voterInfo_address_title">Correspondence Address</string>
 
 </resources>

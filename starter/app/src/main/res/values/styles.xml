@@ -19,6 +19,10 @@
         <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 
+    <style name="Text20.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="Text15">
         <item name="android:textSize">@dimen/text_large</item>
         <item name="android:textColor">@color/primaryTextColor</item>
@@ -27,6 +31,10 @@
 
     <style name="Text15.Bold">
         <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="Text15.Link">
+        <item name="android:textColor">@color/blue</item>
     </style>
 
     <style name="Text13">

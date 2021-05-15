@@ -53,77 +53,85 @@ class VoterInfoViewModel(private val politicalDataRepository: DataRepository) : 
     val showToast: LiveData<Int>
         get() = _showToast
 
-    private lateinit var currentElection: Election
+    private val _currentElection = MutableLiveData<Election>()
+    val currentElection: LiveData<Election>
+        get() = _currentElection
 
     fun setCurrentElectionFromArgs(election: Election) {
-        currentElection = election
+        _currentElection.value = election
     }
 
     fun loadSavedState() {
         _loadingState.value = true
         viewModelScope.launch {
-            when(politicalDataRepository.getSavedElectionFromDatabase(currentElection.id)){
-                is Result.Success -> {
-                    _isSaved.postValue(true)
-                    _loadingState.postValue(false)
+            _currentElection.value?.let { election ->
+                when(politicalDataRepository.getSavedElectionFromDatabase(election.id)){
+                    is Result.Success -> {
+                        _isSaved.postValue(true)
+                        _loadingState.postValue(false)
+                    }
+                    is Result.Error -> {
+                        _isSaved.postValue(false)
+                        _loadingState.postValue(false)
+                    }
                 }
-                is Result.Error -> {
-                    _isSaved.postValue(false)
-                    _loadingState.postValue(false)
-                }
-            }
+            } ?: run {_loading.postValue(false)}
         }
     }
 
     fun refreshVoterInfo() {
         _loading.value = true
         viewModelScope.launch {
-            when(val result = politicalDataRepository.getRemoteVoterInfo(
-                    "${currentElection.division.country}, ${currentElection.division.state}",
-                    currentElection.id.toLong())
-            ) {
-                is Result.Success<VoterInfoResponse> -> {
-                    _voterInfo.value = result.data
-                    if(!result.data.state.isNullOrEmpty()) {
-                        _ballotUrl.value = result.data.state[0].electionAdministrationBody.ballotInfoUrl
-                        _votingLocationUrl.value = result.data.state[0].electionAdministrationBody.votingLocationFinderUrl
-                        result.data.state[0].electionAdministrationBody.correspondenceAddress?.let{ address ->
-                            _correspondenceAddress.value = address.toFormattedString()
+            _currentElection.value?.let { election ->
+                when(val result = politicalDataRepository.getRemoteVoterInfo(
+                        "${election.division.country}, ${election.division.state}",
+                        election.id.toLong())
+                ) {
+                    is Result.Success<VoterInfoResponse> -> {
+                        _voterInfo.value = result.data
+                        if(!result.data.state.isNullOrEmpty()) {
+                            _ballotUrl.value = result.data.state[0].electionAdministrationBody.ballotInfoUrl
+                            _votingLocationUrl.value = result.data.state[0].electionAdministrationBody.votingLocationFinderUrl
+                            result.data.state[0].electionAdministrationBody.correspondenceAddress?.let{ address ->
+                                _correspondenceAddress.value = address.toFormattedString()
+                            }
                         }
+                        _loading.postValue(false)
                     }
-                    _loading.postValue(false)
+                    is Result.Error -> {
+                        _loading.postValue(false)
+                        _showSnackBar.postValue(R.string.voterInfo_error_fetch_data)
+                    }
                 }
-                is Result.Error -> {
-                    _loading.postValue(false)
-                    _showSnackBar.postValue(R.string.voterInfo_error_fetch_data)
-                }
-            }
+            } ?: run {_loading.postValue(false)}
         }
     }
 
     fun toggleSaveElection() {
         viewModelScope.launch {
-            val result = if(isSaved.value == true) {
-                politicalDataRepository.deleteElectionFromDatabase(currentElection.id)
-            } else {
-                politicalDataRepository.saveElectionToDatabase(currentElection)
-            }
-
-            when(result) {
-                is Result.Success -> {
-                    if(isSaved.value == true) {
-                        _showToast.postValue(R.string.voterInfo_save_success)
-                    } else {
-                        _showToast.postValue(R.string.voterInfo_remove_success)
-                    }
-
-                    loadSavedState()
+            _currentElection.value?.let { election ->
+                val result = if(isSaved.value == true) {
+                    politicalDataRepository.deleteElectionFromDatabase(election.id)
+                } else {
+                    politicalDataRepository.saveElectionToDatabase(election)
                 }
-                is Result.Error -> {
-                    if(isSaved.value == true) {
-                        _showToast.postValue(R.string.voterInfo_save_error)
-                    } else {
-                        _showToast.postValue(R.string.voterInfo_remove_error)
+
+                when(result) {
+                    is Result.Success -> {
+                        if(isSaved.value == true) {
+                            _showToast.postValue(R.string.voterInfo_remove_success)
+                        } else {
+                            _showToast.postValue(R.string.voterInfo_save_success)
+                        }
+
+                        loadSavedState()
+                    }
+                    is Result.Error -> {
+                        if(isSaved.value == true) {
+                            _showToast.postValue(R.string.voterInfo_remove_error)
+                        } else {
+                            _showToast.postValue(R.string.voterInfo_save_error)
+                        }
                     }
                 }
             }
